@@ -6,12 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * SecteursStructures
  *
+ * @ApiResource(normalizationContext={"groups"={"secStruct"}})
  * @ORM\Table(name="secteurs_structures", uniqueConstraints={@ORM\UniqueConstraint(name="secteurs_structures_uq", columns={"ID_STRUCTURE", "ID_SECTEUR"})}, indexes={@ORM\Index(name="secteurs_structures_secteur_fk", columns={"ID_SECTEUR"}), @ORM\Index(name="IDX_ECF28C16355BC10D", columns={"ID_STRUCTURE"})})
  * @ORM\Entity
- * @ApiResource
  */
 class SecteursStructures
 {
@@ -21,6 +23,7 @@ class SecteursStructures
      * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"structure", "secStruct"})
      */
     private $id;
 
@@ -31,6 +34,8 @@ class SecteursStructures
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="ID_SECTEUR", referencedColumnName="ID")
      * })
+     * @Groups({"structure", "secStruct"})
+     * 
      */
     private $idSecteur;
 
@@ -41,6 +46,7 @@ class SecteursStructures
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="ID_STRUCTURE", referencedColumnName="ID")
      * })
+     * @Groups({"secStruct"})
      */
     private $idStructure;
 

@@ -6,10 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Secteur
@@ -18,6 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @ORM\Entity
  * @ApiResource
  * @ApiFilter(RangeFilter::class, properties={"id"})
+ * @ApiFilter(SearchFilter::class, properties={"libelle": "partial"})
  */
 class Secteur
 {
@@ -27,6 +30,7 @@ class Secteur
      * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"structure", "secStruct"})
      */
     private $id;
 
@@ -34,6 +38,7 @@ class Secteur
      * @var string
      * @NotBlank(message="Libellé non renseigné")
      * @ORM\Column(name="LIBELLE", type="string", length=100, nullable=false)
+     * @Groups({"structure", "secStruct"})
      */
     private $libelle;
 

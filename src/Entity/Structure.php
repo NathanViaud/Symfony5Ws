@@ -9,12 +9,23 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * Structure
  *
  * @ORM\Table(name="structure")
  * @ORM\Entity
- * @ApiResource
+ * @ApiResource(normalizationContext={"groups"={"structure"}})
+ * 
+ * @ApiFilter(BooleanFilter::class, properties={"estasso"})
+ * @ApiFilter(NumericFilter::class, properties={"id"})
+ * @ApiFilter(SearchFilter::class, properties={"nom": "partial", "ville": "exact"})
  */
 class Structure
 {
@@ -24,6 +35,7 @@ class Structure
      * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"structure", "secStruct"})
      */
     private $id;
 
@@ -31,6 +43,7 @@ class Structure
      * @var string
      *
      * @ORM\Column(name="NOM", type="string", length=100, nullable=false)
+     * @Groups({"structure", "secStruct"})
      */
     private $nom;
 
@@ -46,6 +59,7 @@ class Structure
      * @var string
      * 
      * @ORM\Column(name="CP", type="string", length=5, nullable=false)
+     * @Groups({"structure"})
      */
     private $cp;
 
@@ -53,6 +67,7 @@ class Structure
      * @var string
      *
      * @ORM\Column(name="VILLE", type="string", length=100, nullable=false)
+     * @Groups({"structure"})
      */
     private $ville;
 
@@ -60,6 +75,7 @@ class Structure
      * @var bool
      *
      * @ORM\Column(name="ESTASSO", type="boolean", nullable=false)
+     * @Groups({"structure"})
      */
     private $estasso;
 
@@ -67,6 +83,7 @@ class Structure
      * @var int|null
      *
      * @ORM\Column(name="NB_DONATEURS", type="integer", nullable=true, options={"default"="NULL"})
+     * @Groups({"structure"})
      */
     private $nbDonateurs = NULL;
 
@@ -74,6 +91,7 @@ class Structure
      * @var int|null
      *
      * @ORM\Column(name="NB_ACTIONNAIRES", type="integer", nullable=true, options={"default"="NULL"})
+     * @Groups({"structure"})
      */
     private $nbActionnaires = NULL;
 
@@ -81,6 +99,7 @@ class Structure
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="SecteursStructures", mappedBy="idStructure")
+     * @Groups({"structure"})
      */
     private $secteursStructures;
 
